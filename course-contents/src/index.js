@@ -1,38 +1,49 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-// Node Packaged used to generate unique keys
+// Node package used to generate unique keys
 import uuidv1 from 'uuid/v1'
 
-const Course = (props) => {
-  return(
+const Course = ({course}) => {
+  const exercises = course.parts.map(part => part.exercises);
+  const total = exercises.reduce( (accumulator, sum) => accumulator + sum);
+
+   return(
     <>
-      <Header course={props.course.name}/>
-      <Content parts={props.course.parts}/>
+      <Header name={course.name}/>
+      <Content parts={course.parts}/>
+      <Total total={total}/>
     </>
   )
 }
 
-const Header = (props) => {
+const Header = ({name}) => {
   return (
-    <h1>{props.course}</h1>
+    <h1>{name}</h1>
   )
 }
 
-const Content = (props) => {
-  const contentArray = (props.parts).map((part, i) => 
+const Content = ({ parts }) => {
+  const contentList = () => parts.map(part => 
     <Part key={uuidv1()} part={part} />
-  );
+  )
+  
   return (
     <>
-      {contentArray}
+      {contentList()}
     </>
   )
 }
 
-const Part = (props) => {
+const Part = ({ part }) => {
   return (
-    <p>{props.part.name} {props.part.exercises}</p>
+    <p>{part.name} {part.exercises}</p>
+  )
+}
+
+const Total = ({ total }) => {
+  return(
+    <strong>Total of {total} exercises</strong>
   )
 }
 
@@ -51,6 +62,10 @@ const App = () => {
       {
         name: 'State of a component',
         exercises: 14
+      }, 
+      {
+        name: 'Redux',
+        exercises: 11
       }
     ]
   }
