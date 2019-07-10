@@ -1,9 +1,38 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Course = () => {
+// Node Packaged used to generate unique keys
+import uuidv1 from 'uuid/v1'
+
+const Course = (props) => {
   return(
-    <></>
+    <>
+      <Header course={props.course.name}/>
+      <Content parts={props.course.parts}/>
+    </>
+  )
+}
+
+const Header = (props) => {
+  return (
+    <h1>{props.course}</h1>
+  )
+}
+
+const Content = (props) => {
+  const contentArray = (props.parts).map((part, i) => 
+    <Part key={uuidv1()} part={part} />
+  );
+  return (
+    <>
+      {contentArray}
+    </>
+  )
+}
+
+const Part = (props) => {
+  return (
+    <p>{props.part.name} {props.part.exercises}</p>
   )
 }
 
@@ -28,7 +57,7 @@ const App = () => {
 
   return (
     <div>
-      <Course course={course} />
+      <Course course={course}/>
     </div>
   )
 }
