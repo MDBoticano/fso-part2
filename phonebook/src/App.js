@@ -15,11 +15,21 @@ const App = () => {
     event.preventDefault();
     // console.log()
 
-    const personObject = {
-      name: newName
-    }
+    // Don't allow addition of already existing names: if/else
+    // if (persons.find( (person) => person.name === newName) !== undefined) {
+    //   alert(`${newName} is already added to the phonebook`);
+    // } else {
+    //   const personObject = {
+    //     name: newName
+    //   }
+    //   setPersons(persons.concat(personObject));
+    // }    
 
-    setPersons(persons.concat(personObject));
+    // Don't allow addition of already existing names: ternary
+    persons.find(person => person.name === newName) !== undefined
+      ? alert(`${newName} is already added to the phonebook`)
+      : setPersons(persons.concat({name: newName}))
+
     setNewName('');
   }
 
