@@ -37,6 +37,8 @@ const App = () => {
     } else if (numberExists) {
       alert(`${newNumber} is already added to the phonebook`);
       setNewNumber('');
+    }  else if (!numberExists && newName === '') {
+      alert(`You need a name with that number!`);
     } else {
       setPersons(persons.concat({name: newName, number: newNumber}));
       setNewName('');
@@ -70,15 +72,20 @@ const App = () => {
           name: <input value={newName} onChange={handleNameChange}/>
         </div>
         <div>
-          number: <input 
-                    value={newNumber} 
-                    onChange={handleNumberChange}
-                    type="tel" 
-                    // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" // 123-456-7890
-                    // pattern="\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|
-                    //   2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|
-                    //   4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$"
-                  />
+          number: 
+          <input 
+            value={newNumber} 
+            onChange={handleNumberChange}
+            type="tel" 
+            // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" // 123-456-7890
+            // pattern="\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|
+            //   2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|
+            //   4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$"
+            // pattern="\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|
+            //   2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|
+            //   4[987654310]|3[9643210]|2[70]|7|1)
+            //   \W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*(\d{1,2})$"
+          />
         </div>
         <div>
           <button type="submit" >add</button>
