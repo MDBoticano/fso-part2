@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
 
+import Filter from './components/Filter'
+import Form from './components/Form'
+import Persons from './components/Persons'
+
+
 const App = () => {
   const [ persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456' },
@@ -7,29 +12,18 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345' },
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]) 
+  
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
 
-  const filterSearch = (array) => {
-    return array.filter(person => person.name.toLowerCase().includes(newFilter))
-  }
-
-  const personsToShow = filterSearch(persons);
-  
-  const listPersons = () => personsToShow.map(person => 
-    <p key={person.name}>{person.name} {person.number}</p>
-  )
-  
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log()
 
-    // Don't allow addition of already existing names
-    let nameExists = persons.find(person => person.name === newName) !==
-                     undefined;
-    let numberExists = persons.find(person => person.number === newNumber) !== 
-                       undefined;
+    const nameExists = persons.find(person => person.name === newName) 
+      !== undefined;
+    const numberExists = persons.find(person => person.number === newNumber) 
+      !== undefined;
 
     if (nameExists) {
       alert(`${newName} is already added to the phonebook`);
@@ -64,36 +58,16 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with <input value={newFilter} onChange={handleFilterChange}/>
+      <Filter myFilter={newFilter} eventHandler={handleFilterChange}/>
 
       <h2>add a new</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: 
-          <input 
-            value={newNumber} 
-            onChange={handleNumberChange}
-            type="tel" 
-            // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" // 123-456-7890
-            // pattern="\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|
-            //   2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|
-            //   4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$"
-            // pattern="\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|
-            //   2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|
-            //   4[987654310]|3[9643210]|2[70]|7|1)
-            //   \W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*(\d{1,2})$"
-          />
-        </div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
+      <Form handleSubmit={handleSubmit} newName={newName} 
+        handleNameChange={handleNameChange} newNumber= {newNumber} 
+        handleNumberChange={handleNumberChange}
+      />
 
       <h2>Numbers</h2>
-      {listPersons()}
+      <Persons newFilter={newFilter} persons={persons} />
     </div>
   )
 }
