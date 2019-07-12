@@ -7,7 +7,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   const handleFilterChange = (event) => {
-    console.log(event.target.value);
+    console.log("Searching", event.target.value);
     setFilter(event.target.value);
   }
 
