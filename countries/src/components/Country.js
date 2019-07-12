@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Country.css';
+// import Weather from './Weather';
 
 const Country = ({ country, showDetails }) => {
   const [detailsToggle, setDetailsToggle] = useState(showDetails);
@@ -25,11 +26,12 @@ const Country = ({ country, showDetails }) => {
           <button onClick={toggleDetails}>{toggleText()}</button>
           <p>Capital: {country.capital}</p>
           <p>Population: {country.population}</p>
-          <h2>Languages</h2>
+          <h3>Languages</h3>
           <ul>
             {mapLanguages()}
           </ul>
-          <img className="flag-img" src={country.flag} alt={country.name+'_flag'}/>
+          <img className="flag" src={country.flag} alt={country.name+'_flag'}/>
+          {/* <Weather country={country.alpha2Code} capital={country.capital} /> */}
         </div>
       )
     } else {
