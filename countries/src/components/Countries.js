@@ -13,7 +13,7 @@ const Countries = ({ nameFilter }) => {
         .get('https://restcountries.eu/rest/v2/all')
         // .get('https://restcountries.eu/rest/v2/all?fields=name')
         .then(response => {
-          console.log('Retrieved data for', response.data.length, 'countries');
+          // console.log('Retrieved data for', response.data.length, 'countries');
           // console.log(response.data);
           setCountries(response.data);
         })
@@ -21,7 +21,7 @@ const Countries = ({ nameFilter }) => {
       axios
       .get('https://restcountries.eu/rest/v2/name/'+nameFilter)
       .then(response => {
-        console.log('Retrieved data from RESTcountries');
+        // console.log('Retrieved data from RESTcountries');
         // console.log(response.data);
         setCountries(response.data);
       })
@@ -59,7 +59,7 @@ const Countries = ({ nameFilter }) => {
   }
 
   const displayCountries = () => {
-    console.log('called displayCountries()')
+    // console.log('called displayCountries()')
     // console.log('# of matches:', countries.length);
     // console.log(countries);
     if(countriesToDisplay.length > 0) {
