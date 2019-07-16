@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import Form from './components/Form'
 import Persons from './components/Persons'
-import axios from 'axios';
+import phonebookService from './services/phonebookService'
 
 
 const App = () => {
@@ -14,10 +14,10 @@ const App = () => {
 
   // Use effect hook to get data from db.json
   useEffect(()=> {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    phonebookService
+      .getEntries()
+      .then(retrievedEntries => {
+        setPersons(retrievedEntries)
       })
   }, [])
 
