@@ -38,7 +38,22 @@ const App = () => {
     }  else if (!numberExists && newName === '') {
       alert(`You need a name with that number!`);
     } else {
-      setPersons(persons.concat({name: newName, number: newNumber}));
+      // setPersons(persons.concat({name: newName, number: newNumber}));
+      const phonebookEntry = {
+        name: newName,
+        number: newNumber,
+        date: new Date().toISOString()
+      }
+      
+      phonebookService
+        // use service to update server db.json
+        .createEntry(phonebookEntry) 
+        // use returmed data to update local state
+        .then(returnedEntry => {
+          setPersons(persons.concat(returnedEntry))
+        }) 
+
+      // Reset text fields
       setNewName('');
       setNewNumber('');
     }    
