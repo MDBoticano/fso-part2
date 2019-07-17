@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-//const API_KEY = '';
-// console.log(API_KEY);
-
-const sampleData = {
+const sampleData = { // Same format as what API would return
   "coord": {
     "lon": -122.08,
     "lat": 37.39
@@ -48,12 +45,12 @@ const sampleData = {
   "cod": 200
 }
 
-// console.log('sample data:', sampleData.weather[0].main); // Format: weather desc
-
-// Note: requires API key. Put key in line 62 (let APIkey=...)
-// Then, uncomment lines 66 - 81 to enable hook
+/* Uses sample data. To obtain real data, make an openweathermap account and 
+ * get an API key. Disable sampleData loading by commenting out line 64
+ * Then, un comment out lines 65 - 79 to enable axios HTTP GET. 
+ * Lastly, put API key in line 59 for use when making HTTP GET requests. 
+ */
 const Weather = ({ capital, country }) => {
-  // const [ weather, setWeather ] = useState(sampleData)
   const [ localWeather, setLocalWeather ] = useState({})
   let locationTemp = -10000;
   let locationWeatherDesc = '';
@@ -63,22 +60,23 @@ const Weather = ({ capital, country }) => {
   let weatherURL = 'https://api.openweathermap.org/data/2.5/weather?q='+location+APIkey;
   // console.log('Weather URL:', weatherURL);
 
-  // useEffect(() => {
-  //   if(window.confirm('Get data from openweathermap.org?')) {
-  //     axios
-  //       .get(weatherURL)
+  useEffect(() => {
+    setLocalWeather(sampleData); 
+    // if(window.confirm('Get data from openweathermap.org?')) {
+    //   axios
+    //     .get(weatherURL)
         
-  //       .then(response => {
-  //         console.log('Retreived weather data from openweather');
-  //         console.log(response.data);
-  //         setLocalWeather(response.data);
-  //       })
-  //       .catch(function(error) {
-  //         console.log(error);
-  //         console.log('Unable to fetch weather data');
-  //       })
-  //   }
-  // }, []);
+    //     .then(response => {
+    //       console.log('Retreived weather data from openweather');
+    //       console.log(response.data);
+    //       setLocalWeather(response.data);
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //       console.log('Unable to fetch weather data');
+    //     })
+    // }
+  }, []);
 
   const tempInCelsius = (tempInKelvin) => {
     if (tempInKelvin === -10000) {
