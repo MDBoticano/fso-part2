@@ -30,7 +30,13 @@ const App = () => {
       !== undefined;
 
     // Decide which fields to reset after each condition
-    if (nameExists) {
+    if (nameExists && numberExists) {
+      alert(`${newName} and ${newNumber} is already added to the phonebook. ` + 
+        `Please edit only one existing value at a time`);
+      setNewName('');
+      setNewNumber('');
+      // Note: can delete one name and update number on another, but confusing
+    } else if (nameExists && !numberExists) {
       // alert(`${newName} is already added to the phonebook`);
       if(window.confirm(`${newName} is already added to the phonebook. ` +
         `Do you want to update ${newName}'s number?`)) {
@@ -39,7 +45,7 @@ const App = () => {
         setNewNumber('');
       }
       setNewName('');
-    } else if (numberExists) {
+    } else if (numberExists && !nameExists) {
       // alert(`${newNumber} is already added to the phonebook`);
       if(window.confirm(`${newNumber} is already added to the phonebook. ` +
         `Do you want to update ${newNumber}'s owner?`)) {
@@ -71,6 +77,7 @@ const App = () => {
     }    
   }
 
+  // Modifies server to change number of a user with a specific name
   const updateNumberOf = (name, number) => {
     // Find the phonebook entry with a matching name
     const entry = persons.find(person => person.name === name)
@@ -90,6 +97,7 @@ const App = () => {
       })
   }
 
+  // Modifies server to change name of a number
   const updateNameOf = (number, name) => {
     // Find the phonebook entry with a matching number
     const entry = persons.find(person => person.number === number)
