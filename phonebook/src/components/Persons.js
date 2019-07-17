@@ -1,7 +1,7 @@
 import React from 'react'
 import Person from './Person'
 
-const Persons = ({ newFilter, persons }) => {
+const Persons = ({ newFilter, persons, deleteEntryAt }) => {
 
   const filterSearch = (array) => {
     const insensitiveFilter = newFilter.toLowerCase();
@@ -13,7 +13,10 @@ const Persons = ({ newFilter, persons }) => {
   const personsToShow = filterSearch(persons);
   
   const listPersons = () => personsToShow.map(person => 
-    <Person key={person.name} name={person.name} number={person.number} />
+    <Person 
+      key={person.name} name={person.name} 
+      number={person.number} deleteHandler={() => deleteEntryAt(person.id)}
+    />
   )
   
   return (
