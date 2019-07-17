@@ -14,8 +14,8 @@ const Persons = ({ newFilter, persons, deleteEntryAt }) => {
   
   const listPersons = () => personsToShow.map(person => 
     <Person 
-      key={person.name} name={person.name} 
-      number={person.number} deleteHandler={() => deleteEntryAt(person.id)}
+      key={person.name} name={person.name} number={person.number} 
+      deleteHandler={() => deleteEntryAt(person.id)}
     />
   )
   

@@ -64,15 +64,19 @@ const App = () => {
       phonebookService
         // Delete data from server at id
         .deleteEntry(id)
+        .then(retrievedEntries => {
+            setPersons(retrievedEntries)
+          })
+        .then(console.log('retrieved updated entries'))
     }
     // Get server data once more (problem if outside effect hook?)
-    phonebookService
+    // phonebookService
       // Then retrieve updated data from server to cause a re-render
-      .getEntries()
-      .then(retrievedEntries => {
-        setPersons(retrievedEntries)
-      })
-      .then(() => console.log('retrieved updated entries'))
+      // .getEntries()
+      // .then(retrievedEntries => {
+      //   setPersons(retrievedEntries)
+      // })
+      // .then(() => console.log('retrieved updated entries'))
     // console.log("Request to delete",`${id}`)
     
   }
