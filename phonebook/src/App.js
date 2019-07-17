@@ -146,6 +146,7 @@ const App = () => {
         }))
       })
       .catch(error => {
+        console.log(error)
         setStatusMessage(
           `The entry for '${name}' was already deleted from the server`
         )
@@ -166,6 +167,7 @@ const App = () => {
         .deleteEntry(id)
         // Then update state with new server data (also triggers re-render)
         .then(retrievedEntries => {
+            console.log('entries retreived after deletion', persons)
             setPersons(retrievedEntries)
           }
         )
