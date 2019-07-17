@@ -14,6 +14,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
   const [ statusMessage, setStatusMessage ] = useState('')
+  const [ statusType, setStatusType ] = useState('')
 
   // Use effect hook to get data from db.json
   useEffect(()=> {
@@ -33,7 +34,7 @@ const App = () => {
       !== undefined;
 
     // Decide which fields to reset after each condition
-    if (nameExists && numberExists) {
+    if (nameExists && numberExists && newNumber !== '') {
       alert(`${newName} and ${newNumber} is already added to the phonebook. ` + 
         `Please edit only one existing value at a time`);
       setNewName('');
@@ -47,6 +48,7 @@ const App = () => {
         updateNumberOf(newName, newNumber)
 
         setStatusMessage( `Updated ${newName}'s number to ${newNumber}` )
+        setStatusType('success')
         setTimeout(() => {
           setStatusMessage(null)
         }, 5000)
@@ -54,7 +56,7 @@ const App = () => {
         setNewNumber('');
       }
       setNewName('');
-    } else if (numberExists && !nameExists) {
+    } else if (numberExists && !nameExists && newNumber !== '') {
       // alert(`${newNumber} is already added to the phonebook`);
       if(window.confirm(`${newNumber} is already added to the phonebook. ` +
         `Do you want to update ${newNumber}'s owner?`)) {
@@ -62,13 +64,21 @@ const App = () => {
         updateNameOf(newNumber, newName)
 
         setStatusMessage( `Updated ${newNumber}'s owner to ${newName}` )
+        setStatusType('success')
         setTimeout(() => {
           setStatusMessage(null)
         }, 5000)
         setNewName('');
       }
       setNewNumber('');
-    }  else if (!numberExists && newName === '') {
+    }  else if (nameExists && newNumber === '') {
+      alert(`${newName} is already added to the phonebook. ` + 
+      `Provide a phone number to update ${newName}'s entry, ` + 
+      `or create an entry with a different name.`);
+    setNewName('');
+    setNewNumber('');
+    
+    } else if (!numberExists && newName === '') {
       alert(`You need a name with that number!`);
     } else {
       const phonebookEntry = {
@@ -86,6 +96,7 @@ const App = () => {
         }) 
 
       setStatusMessage(`Added ${newName}`)
+      setStatusType('success')
       setTimeout(() => {
         setStatusMessage(null)
       }, 5000)
@@ -134,9 +145,20 @@ const App = () => {
           else { return returnedEntry }
         }))
       })
+      .catch(error => {
+        setStatusMessage(
+          `The entry for '${name}' was already deleted from the server`
+        )
+        setStatusType('error')
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
+        setPersons(persons.filter(p => p.id !== entryID))
+      })
   }
 
   const deleteEntryAt = (id) => {
+    const idName = (persons.find(p => p.id = id)).name;
     // Confirm delete
     if(window.confirm("Do you really want to delete this entry?")) {
       phonebookService
@@ -147,6 +169,14 @@ const App = () => {
             setPersons(retrievedEntries)
           }
         )
+
+      setStatusMessage(
+        `The entry for '${idName}' was successfully removed from the server`
+      )
+      setStatusType('warning')
+      setTimeout(() => {
+        setStatusMessage(null)
+      }, 5000)
     }
   }
 
@@ -169,7 +199,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Notification status={statusMessage} />
+      <Notification status={statusMessage} statusType={statusType} />
 
       <Filter myFilter={newFilter} eventHandler={handleFilterChange}/>
 
