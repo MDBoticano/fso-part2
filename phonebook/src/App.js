@@ -29,11 +29,24 @@ const App = () => {
     const numberExists = persons.find(person => person.number === newNumber) 
       !== undefined;
 
+    // Decide which fields to reset after each condition
     if (nameExists) {
-      alert(`${newName} is already added to the phonebook`);
+      // alert(`${newName} is already added to the phonebook`);
+      if(window.confirm(`${newName} is already added to the phonebook. ` +
+        `Do you want to update ${newName}'s number?`)) {
+        // update
+        updateNumberOf(newName, newNumber)
+        setNewNumber('');
+      }
       setNewName('');
     } else if (numberExists) {
-      alert(`${newNumber} is already added to the phonebook`);
+      // alert(`${newNumber} is already added to the phonebook`);
+      if(window.confirm(`${newNumber} is already added to the phonebook. ` +
+        `Do you want to update ${newNumber}'s owner?`)) {
+        // update
+        updateNameOf(newNumber, newName)
+        setNewName('');
+      }
       setNewNumber('');
     }  else if (!numberExists && newName === '') {
       alert(`You need a name with that number!`);
@@ -56,6 +69,44 @@ const App = () => {
       setNewName('');
       setNewNumber('');
     }    
+  }
+
+  const updateNumberOf = (name, number) => {
+    // Find the phonebook entry with a matching name
+    const entry = persons.find(person => person.name === name)
+    const entryID = entry.id
+
+    // Create a modified entry
+    const modifiedEntry = {...entry, number: number}
+    console.log(modifiedEntry);
+
+    phonebookService
+      .updateEntry(entryID, modifiedEntry)
+      .then(returnedEntry => {
+        setPersons(persons.map(person => {
+          if (person.id !== entryID) { return person }
+          else { return returnedEntry }
+        }))
+      })
+  }
+
+  const updateNameOf = (number, name) => {
+    // Find the phonebook entry with a matching number
+    const entry = persons.find(person => person.number === number)
+    const entryID = entry.id
+
+    // Create a modified entry
+    const modifiedEntry = {...entry, name: name}
+    console.log(modifiedEntry);
+
+    phonebookService
+      .updateEntry(entryID, modifiedEntry)
+      .then(returnedEntry => {
+        setPersons(persons.map(person => {
+          if (person.id !== entryID) { return person }
+          else { return returnedEntry }
+        }))
+      })
   }
 
   const deleteEntryAt = (id) => {
