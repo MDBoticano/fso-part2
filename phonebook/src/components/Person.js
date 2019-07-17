@@ -8,8 +8,10 @@ const Person = ({ name, number, deleteHandler }) => {
 
   return (
     <>
-      <p>{name} {number}</p>
-      <button onClick={deleteThisEntry}>Delete</button>
+      <div>
+        {name} {number} { }
+        <button onClick={deleteThisEntry}>Delete</button>
+      </div>
     </>
     
   )

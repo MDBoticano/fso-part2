@@ -3,7 +3,10 @@ const baseUrl = 'http://localhost:3001/persons'
 
 const getEntries = () => {
   const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+  return request.then(response => {
+      console.log('Retrieved server data')
+      return response.data
+    })
 }
 
 const createEntry = (newEntry) => {
@@ -18,10 +21,11 @@ const updateEntry = (id, newEntry) => {
 
 const deleteEntry = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`)
+  console.log('Deleted entry at id', `${id}`)
   return request.then(() => {
-    console.log('deleted entry at id', `${id}`)
-    const getUpdatedData = axios.get(baseUrl);
-    return getUpdatedData.then(response => response.data)
+    // axios.delete by default doesn't return a promise, so we make one
+    // We use getEntries to retrieve the updated data and return it as a promise
+    return getEntries()
   })
 }
 

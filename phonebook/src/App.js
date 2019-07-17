@@ -62,23 +62,14 @@ const App = () => {
     // Confirm delete
     if(window.confirm("Do you really want to delete this entry?")) {
       phonebookService
-        // Delete data from server at id
+        // Delete data from server at id and fetch server data once again
         .deleteEntry(id)
+        // Then update state with new server data (also triggers re-render)
         .then(retrievedEntries => {
             setPersons(retrievedEntries)
-          })
-        .then(console.log('retrieved updated entries'))
+          }
+        )
     }
-    // Get server data once more (problem if outside effect hook?)
-    // phonebookService
-      // Then retrieve updated data from server to cause a re-render
-      // .getEntries()
-      // .then(retrievedEntries => {
-      //   setPersons(retrievedEntries)
-      // })
-      // .then(() => console.log('retrieved updated entries'))
-    // console.log("Request to delete",`${id}`)
-    
   }
 
   const handleNameChange = (event) => {
@@ -102,13 +93,16 @@ const App = () => {
       <Filter myFilter={newFilter} eventHandler={handleFilterChange}/>
 
       <h2>add a new</h2>
-      <Form handleSubmit={handleSubmit} newName={newName} 
+      <Form 
+        handleSubmit={handleSubmit} newName={newName} 
         handleNameChange={handleNameChange} newNumber={newNumber} 
         handleNumberChange={handleNumberChange}
       />
 
       <h2>Numbers</h2>
-      <Persons newFilter={newFilter} persons={persons} deleteEntryAt={deleteEntryAt}/>
+      <Persons 
+        newFilter={newFilter} persons={persons} deleteEntryAt={deleteEntryAt}
+      />
     </div>
   )
 }

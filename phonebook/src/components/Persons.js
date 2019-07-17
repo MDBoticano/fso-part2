@@ -5,7 +5,6 @@ const Persons = ({ newFilter, persons, deleteEntryAt }) => {
 
   const filterSearch = (array) => {
     const insensitiveFilter = newFilter.toLowerCase();
-    // const insensitiveFilter = newFilter;
     return array.filter(person => 
       person.name.toLowerCase().includes(insensitiveFilter))
   }
