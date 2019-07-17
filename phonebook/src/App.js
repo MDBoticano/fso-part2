@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react'
 
 import Filter from './components/Filter'
 import Form from './components/Form'
+import Notification from './components/Notification'
 import Persons from './components/Persons'
 import phonebookService from './services/phonebookService'
 
 
+
 const App = () => {
-  const [persons, setPersons] = useState([])
+  const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
+  const [ statusMessage, setStatusMessage ] = useState('')
 
   // Use effect hook to get data from db.json
   useEffect(()=> {
@@ -42,6 +45,12 @@ const App = () => {
         `Do you want to update ${newName}'s number?`)) {
         // update
         updateNumberOf(newName, newNumber)
+
+        setStatusMessage( `Updated ${newName}'s number to ${newNumber}` )
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
+
         setNewNumber('');
       }
       setNewName('');
@@ -51,6 +60,11 @@ const App = () => {
         `Do you want to update ${newNumber}'s owner?`)) {
         // update
         updateNameOf(newNumber, newName)
+
+        setStatusMessage( `Updated ${newNumber}'s owner to ${newName}` )
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
         setNewName('');
       }
       setNewNumber('');
@@ -70,6 +84,11 @@ const App = () => {
         .then(returnedEntry => {
           setPersons(persons.concat(returnedEntry))
         }) 
+
+      setStatusMessage(`Added ${newName}`)
+      setTimeout(() => {
+        setStatusMessage(null)
+      }, 5000)
 
       // Reset text fields
       setNewName('');
@@ -149,6 +168,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification status={statusMessage} />
+
       <Filter myFilter={newFilter} eventHandler={handleFilterChange}/>
 
       <h2>add a new</h2>
