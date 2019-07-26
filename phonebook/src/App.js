@@ -163,9 +163,9 @@ const App = () => {
     const modifiedEntry = {...entry, name: name}
     console.log(modifiedEntry);
 
+    console.log("Updating entry in frontend: App.js updateNameOf()")
     phonebookService
       .updateEntry(entryID, modifiedEntry)
-      console.log("Updating entry in frontend: App.js updateNameOf()")
       .then(returnedEntry => {
         setPersons(persons.map(person => {
           if (person.id !== entryID) { return person }
@@ -186,10 +186,11 @@ const App = () => {
   }
 
   const deleteEntryAt = (id) => {
-    const idName = (persons.find(p => p.id = id)).name;
+    const idName = (persons.find(p => p.id = id)).name; 
+    // idName wrong, but id right
     console.log(idName);
     // Confirm delete
-    if(window.confirm(`Do you really want to delete this entry? ('${idName})'`)) {
+    if(window.confirm(`Do you really want to delete '${idName}''s entry? `)) {
       phonebookService
         // Delete data from server at id and fetch server data once again
         .deleteEntry(id)
