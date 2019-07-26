@@ -139,6 +139,16 @@ const App = () => {
           else { return returnedEntry }
         }))
       })
+      .catch(error => {
+        console.log("failed to update phone number of entry")
+        console.log(error.response.data)
+        // setStatusMessage(`Failed to add ${newName}`)
+        setStatusMessage(error.response.data.error)
+        setStatusType('error')
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
+      }) 
   }
 
   // Modifies server to change name of a number
