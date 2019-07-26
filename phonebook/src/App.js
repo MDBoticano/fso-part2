@@ -131,6 +131,7 @@ const App = () => {
     const modifiedEntry = {...entry, number: number}
     console.log(modifiedEntry);
 
+    console.log("Updating entry in frontend: App.js updateNumberOf()")
     phonebookService
       .updateEntry(entryID, modifiedEntry)
       .then(returnedEntry => {
@@ -141,9 +142,10 @@ const App = () => {
       })
       .catch(error => {
         console.log("failed to update phone number of entry")
-        console.log(error.response.data)
-        // setStatusMessage(`Failed to add ${newName}`)
-        setStatusMessage(error.response.data.error)
+        // console.log(error.response.data)
+        console.log(error)
+        setStatusMessage(`Failed to update entry's phone number`)
+        // setStatusMessage(error.response.data.error)
         setStatusType('error')
         setTimeout(() => {
           setStatusMessage(null)
@@ -163,6 +165,7 @@ const App = () => {
 
     phonebookService
       .updateEntry(entryID, modifiedEntry)
+      console.log("Updating entry in frontend: App.js updateNameOf()")
       .then(returnedEntry => {
         setPersons(persons.map(person => {
           if (person.id !== entryID) { return person }
