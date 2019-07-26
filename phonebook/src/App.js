@@ -47,11 +47,11 @@ const App = () => {
         // update
         updateNumberOf(newName, newNumber)
 
-        setStatusMessage( `Updated ${newName}'s number to ${newNumber}` )
-        setStatusType('success')
-        setTimeout(() => {
-          setStatusMessage(null)
-        }, 5000)
+        // setStatusMessage( `Updated ${newName}'s number to ${newNumber}` )
+        // setStatusType('success')
+        // setTimeout(() => {
+        //   setStatusMessage(null)
+        // }, 5000)
 
         setNewNumber('');
       }
@@ -63,11 +63,11 @@ const App = () => {
         // update
         updateNameOf(newNumber, newName)
 
-        setStatusMessage( `Updated ${newNumber}'s owner to ${newName}` )
-        setStatusType('success')
-        setTimeout(() => {
-          setStatusMessage(null)
-        }, 5000)
+        // setStatusMessage( `Updated ${newNumber}'s owner to ${newName}` )
+        // setStatusType('success')
+        // setTimeout(() => {
+        //   setStatusMessage(null)
+        // }, 5000)
         setNewName('');
       }
       setNewNumber('');
@@ -81,7 +81,6 @@ const App = () => {
     } else if (!numberExists && newName === '') {
       alert(`You need a name with that number!`);
     } else {
-      let successFlag = false;
 
       const phonebookEntry = {
         name: newName,
@@ -94,7 +93,6 @@ const App = () => {
         .createEntry(phonebookEntry) 
         // use returmed data to update local state
         .then(returnedEntry => {
-
           setPersons(persons.concat(returnedEntry))
         })
         .then(() => {
@@ -140,12 +138,20 @@ const App = () => {
           else { return returnedEntry }
         }))
       })
+      .then(()=> {
+        console.log("Successfully updated phone number of entry")
+        setStatusMessage( `Updated ${newName}'s number to ${newNumber}` )
+        setStatusType('success')
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
+      })
       .catch(error => {
-        console.log("failed to update phone number of entry")
-        // console.log(error.response.data)
-        console.log(error)
-        setStatusMessage(`Failed to update entry's phone number`)
-        // setStatusMessage(error.response.data.error)
+        console.log("Failed to update phone number of entry")
+        console.log(error.response.data.error)
+        // console.log(error)
+        // setStatusMessage("Failed to update entry's phone number") 
+        setStatusMessage(error.response.data.error)
         setStatusType('error')
         setTimeout(() => {
           setStatusMessage(null)
@@ -172,7 +178,14 @@ const App = () => {
           else { return returnedEntry }
         }))
       })
-      .catch(error => {
+      .then(() => {
+        setStatusMessage( `Updated ${newNumber}'s owner to ${newName}` )
+        setStatusType('success')
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
+      })
+      .catch(error => { // assumes all update name errors are due to deletion
         console.log(error)
         setStatusMessage(
           `The entry for '${name}' was already deleted from the server`
@@ -181,7 +194,8 @@ const App = () => {
         setTimeout(() => {
           setStatusMessage(null)
         }, 5000)
-        setPersons(persons.filter(p => p.id !== entryID))
+        // delete
+        setPersons(persons.filter(p => p.id !== entryID)) 
       })
   }
 
