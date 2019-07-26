@@ -81,6 +81,8 @@ const App = () => {
     } else if (!numberExists && newName === '') {
       alert(`You need a name with that number!`);
     } else {
+      let successFlag = false;
+
       const phonebookEntry = {
         name: newName,
         number: newNumber,
@@ -92,15 +94,27 @@ const App = () => {
         .createEntry(phonebookEntry) 
         // use returmed data to update local state
         .then(returnedEntry => {
+
           setPersons(persons.concat(returnedEntry))
+        })
+        .then(() => {
+          console.log(`Successfully added ${newName}`)
+          setStatusMessage(`Added ${newName}`)
+          setStatusType('success')
+          setTimeout(() => {
+            setStatusMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          // setStatusMessage(`Failed to add ${newName}`)
+          setStatusMessage(error.response.data.error)
+          setStatusType('error')
+          setTimeout(() => {
+            setStatusMessage(null)
+          }, 5000)
         }) 
-
-      setStatusMessage(`Added ${newName}`)
-      setStatusType('success')
-      setTimeout(() => {
-        setStatusMessage(null)
-      }, 5000)
-
+      
       // Reset text fields
       setNewName('');
       setNewNumber('');
@@ -160,8 +174,9 @@ const App = () => {
 
   const deleteEntryAt = (id) => {
     const idName = (persons.find(p => p.id = id)).name;
+    console.log(idName);
     // Confirm delete
-    if(window.confirm("Do you really want to delete this entry?")) {
+    if(window.confirm(`Do you really want to delete this entry? ('${idName})'`)) {
       phonebookService
         // Delete data from server at id and fetch server data once again
         .deleteEntry(id)
@@ -171,7 +186,8 @@ const App = () => {
             setPersons(retrievedEntries)
           }
         )
-
+      
+      console.log(idName)
       setStatusMessage(
         `The entry for '${idName}' was successfully removed from the server`
       )
