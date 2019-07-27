@@ -179,23 +179,39 @@ const App = () => {
         }))
       })
       .then(() => {
+        console.log("Successfully updated name number of phone number entry")
         setStatusMessage( `Updated ${newNumber}'s owner to ${newName}` )
         setStatusType('success')
         setTimeout(() => {
           setStatusMessage(null)
         }, 5000)
       })
-      .catch(error => { // assumes all update name errors are due to deletion
+      .catch(error => { 
+        console.log("Failed to update name of phone number entry")
         console.log(error)
-        setStatusMessage(
-          `The entry for '${name}' was already deleted from the server`
-        )
-        setStatusType('error')
-        setTimeout(() => {
-          setStatusMessage(null)
-        }, 5000)
-        // delete
-        setPersons(persons.filter(p => p.id !== entryID)) 
+        console.log(error.response.data.error)    
+
+        if (error.response.data.error.type !== 'ValidationError') {
+          setStatusMessage(error.response.data.error)
+          setStatusType('error')
+          setTimeout(() => {
+            setStatusMessage(null)
+          }, 5000)
+        
+        } 
+        // A non validation error, presumbaly data not on server but only local
+        else {
+          setStatusMessage(
+            `The entry for '${name}' was already deleted from the server`
+          )
+          setStatusType('error')
+          setTimeout(() => {
+            setStatusMessage(null)
+          }, 5000)
+          
+          // delete
+          setPersons(persons.filter(p => p.id !== entryID)) 
+        } 
       })
   }
 
