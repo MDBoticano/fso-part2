@@ -215,9 +215,11 @@ const App = () => {
       })
   }
 
-  const deleteEntryAt = (id) => {
-    const idName = (persons.find(p => p.id = id)).name; 
+  const deleteEntryAt = (id, name) => {
     // idName wrong, but id right
+    // const idName = (persons.find(p => p.id = id)).name; 
+    // Made idName explicitly defined as a parameter
+    const idName = name
     console.log(idName);
     // Confirm delete
     if(window.confirm(`Do you really want to delete '${idName}''s entry? `)) {
